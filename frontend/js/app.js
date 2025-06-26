@@ -147,7 +147,7 @@ function payIuran() {
   );
   let detail = "";
   let amount = 0;
-  let iuranBulan = document.getElementById("iuranJumlahBulan").value;
+  let iuranBulan = parseInt(document.getElementById("iuranJumlahBulan").value);
 
   if (!propertyType) {
     alert("Pilih Ruko atau Rumah terlebih dahulu.");
@@ -163,6 +163,12 @@ function payIuran() {
     }
     detail = rukoNo.value;
     amount = 250000 * iuranBulan; // Assuming 250000 is the monthly fee for Ruko
+    markIuranPaidByYear(
+      detail,
+      iuranBulan,
+      currentPaymentYear,
+      currentPaymentTab
+    );
   } else if (propertyType.value === "Rumah") {
     // Get A or B
     const rumahType = document.querySelector(
@@ -189,6 +195,12 @@ function payIuran() {
     }
     detail = rumahNo.value;
     amount = 170000 * iuranBulan; // Assuming 170000 is the monthly fee for Rumah
+    markIuranPaidByYear(
+      detail,
+      iuranBulan,
+      currentPaymentYear,
+      currentPaymentTab
+    );
   }
 
   // Add to balance and transactions
@@ -210,6 +222,169 @@ function payIuran() {
   document.getElementById("blockRumahTypeA").style.display = "none";
   document.getElementById("blockRumahTypeB").style.display = "none";
   document.getElementById("blockRuko").style.display = "none";
+
+  renderIuranTable(currentPaymentTab, currentPaymentYear);
 }
 
 updateUI();
+
+// --- Data structure for months paid ---
+const iuranStatus = {
+  // Example: "A1 - Reza": [true, true, false, ...] (12 months)
+  // Fill dynamically as needed
+};
+
+// List of Ruko, Rumah A, Rumah B, and THR
+const rukoList = [
+  "R1 - Seblak Nasir",
+  "R2 - Seblak Nasir",
+  "R3 - Daily Laudry",
+  "R4 - Furniture",
+  "R5 - Alex RJM",
+  "R6 - Rental PS",
+  "R7 - Bengkel Motor Global",
+  "R8 - Counter HP",
+  "R9 - Counter HP",
+  "R10 - PEC",
+  "R11",
+];
+const rumahAList = [
+  "A1 - Reza",
+  "A2 - Oma Yeti",
+  "A3 - Oma Ratna",
+  "A4 - Mus",
+  "A5 - Samuel",
+  "A6 - Santoso",
+  "A7 - Prabowo",
+  "A8 - Dira",
+  "A9 - Baru",
+  "A10 - Hendro",
+  "A11 - Budi",
+  "A12 - Satya",
+];
+const rumahBList = [
+  "B1 - Satya",
+  "B2 - Haris",
+  "B3 - Wuri",
+  "B4 - Wahyu",
+  "B5 - Encin",
+  "B6 - Khunaifi",
+  "B7 - Rafi",
+  "B8 - Amir",
+  "B9 - Bahri",
+  "B10 - Hilda",
+];
+const thrList = ["THR"];
+
+function getOrInitStatus(name, months = 12) {
+  if (!iuranStatus[name]) iuranStatus[name] = Array(months).fill(false);
+  return iuranStatus[name];
+}
+
+// --- Payment Tracker Data Structure ---
+const iuranStatusByYear = {};
+let currentPaymentTab = "Ruko";
+let currentPaymentYear = new Date().getFullYear().toString();
+
+function getOrInitStatusByYear(name, year, months = 12) {
+  if (!iuranStatusByYear[year]) iuranStatusByYear[year] = {};
+  if (!iuranStatusByYear[year][name])
+    iuranStatusByYear[year][name] = Array(months).fill(false);
+  return iuranStatusByYear[year][name];
+}
+
+function renderIuranTable(type, year) {
+  let list = [];
+  let months = 12;
+  if (type === "Ruko") list = rukoList;
+  else if (type === "Rumah") list = [...rumahAList, ...rumahBList];
+  else if (type === "THR") {
+    list = thrList;
+    months = 1;
+  }
+
+  let html = `<table class="iuranTable"><thead><tr><th>Nama</th>`;
+  for (let i = 1; i <= months; i++)
+    html += `<th>${type === "THR" ? "THR" : i}</th>`;
+  html += `</tr></thead><tbody>`;
+
+  list.forEach((name) => {
+    const status = getOrInitStatusByYear(name, year, months);
+    html += `<tr><td>${name}</td>`;
+    for (let i = 0; i < months; i++) {
+      html += `<td><input type="checkbox" disabled ${
+        status[i] ? "checked" : ""
+      }></td>`;
+    }
+    html += `</tr>`;
+  });
+  html += `</tbody></table>`;
+  document.getElementById("iuranTableContent").innerHTML = html;
+}
+
+// --- Tab and Year Switching ---
+document.addEventListener("DOMContentLoaded", function () {
+  const tabRuko = document.getElementById("tabRuko");
+  const tabRumah = document.getElementById("tabRumah");
+  const tabTHR = document.getElementById("tabTHR");
+  const yearSelect = document.getElementById("paymentYear");
+
+  function setActive(tab) {
+    tabRuko.classList.remove("active");
+    tabRumah.classList.remove("active");
+    tabTHR.classList.remove("active");
+    tab.classList.add("active");
+  }
+
+  tabRuko.addEventListener("click", function () {
+    setActive(tabRuko);
+    currentPaymentTab = "Ruko";
+    renderIuranTable(currentPaymentTab, currentPaymentYear);
+  });
+  tabRumah.addEventListener("click", function () {
+    setActive(tabRumah);
+    currentPaymentTab = "Rumah";
+    renderIuranTable(currentPaymentTab, currentPaymentYear);
+  });
+  tabTHR.addEventListener("click", function () {
+    setActive(tabTHR);
+    currentPaymentTab = "THR";
+    renderIuranTable(currentPaymentTab, currentPaymentYear);
+  });
+  yearSelect.addEventListener("change", function () {
+    currentPaymentYear = yearSelect.value;
+    renderIuranTable(currentPaymentTab, currentPaymentYear);
+  });
+  // Initial render
+  currentPaymentYear = yearSelect.value;
+  setActive(tabRuko);
+  renderIuranTable(currentPaymentTab, currentPaymentYear);
+});
+
+// --- Update iuranStatus when paying iuran ---
+function markIuranPaid(name, months, type) {
+  const arr = getOrInitStatus(name, type === "THR" ? 1 : 12);
+  let paid = 0;
+  for (let i = 0; i < arr.length && paid < months; i++) {
+    if (!arr[i]) {
+      arr[i] = true;
+      paid++;
+    }
+  }
+}
+
+// --- Update iuranStatusByYear when paying iuran ---
+function markIuranPaidByYear(name, months, year, type) {
+  const arr = getOrInitStatusByYear(name, year, type === "THR" ? 1 : 12);
+  let paid = 0;
+  for (let i = 0; i < arr.length && paid < months; i++) {
+    if (!arr[i]) {
+      arr[i] = true;
+      paid++;
+    }
+  }
+}
+
+// In your payIuran() function, after a successful payment, call:
+// markIuranPaidByYear(detail, iuranBulan, currentPaymentYear, currentPaymentTab);
+// renderIuranTable(currentPaymentTab, currentPaymentYear);

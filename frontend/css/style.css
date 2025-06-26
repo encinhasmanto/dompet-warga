@@ -5,10 +5,22 @@
 body {
   font-family: Arial, sans-serif;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: flex-start;
   padding-top: 40px;
   background: #e0e0e0; /* darker grey */
+}
+
+#mainFlexContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 32px;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .balanceContainer {
@@ -19,6 +31,35 @@ body {
   width: 300px;
   text-align: center;
   margin-right: 1rem;
+  flex: 1 1 300px;
+  min-width: 280px;
+  max-width: 350px;
+}
+
+.iuranIPLContainer {
+  background: #f3f3f3; /* darker white */
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.13);
+  width: 300px;
+  text-align: center;
+  margin-left: 1rem;
+  flex: 1 1 300px;
+  min-width: 280px;
+  max-width: 350px;
+}
+
+#paymentTrackerContainer {
+  background: #f3f3f3;
+  border-radius: 10px;
+  margin: 32px auto 0 auto;
+  padding: 20px 16px 16px 16px;
+  width: 100%;
+  max-width: 900px;
+  box-shadow: 0 2px 8px rgba(212, 175, 55, 0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 input {
@@ -44,16 +85,6 @@ ul {
 }
 
 /* Iuran IPL */
-
-.iuranIPLContainer {
-  background: #f3f3f3; /* darker white */
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.13);
-  width: 300px;
-  text-align: center;
-  margin-left: 1rem;
-}
 
 #propertyStep input,
 #blockRumah input,
@@ -178,4 +209,86 @@ ul {
 #iuranJumlahBulan:focus {
   border-color: #e6c200;
   outline: none;
+}
+
+#iuranTableContainer {
+  background: #f3f3f3;
+  border-radius: 10px;
+  margin: 24px auto 0 auto;
+  padding: 16px;
+  width: 100%;
+  max-width: 900px;
+  box-shadow: 0 2px 8px rgba(212, 175, 55, 0.08);
+}
+
+#paymentTrackerContainer h1 {
+  font-size: 1.6rem;
+  color: #bfa100;
+  margin-bottom: 12px;
+}
+
+#paymentYearSelector {
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+#paymentYear {
+  padding: 4px 10px;
+  border-radius: 5px;
+  border: 1px solid #e6c200;
+  background: #fffbea;
+  color: #bfa100;
+  font-weight: 500;
+}
+
+#iuranTableTabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+#iuranTableTabs button {
+  background: #bfa100;
+  color: white;
+  border: none;
+  border-radius: 6px 6px 0 0;
+  padding: 8px 18px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+#iuranTableTabs button.active {
+  background: #8c7300;
+}
+
+.iuranTable {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fffbea;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.iuranTable th,
+.iuranTable td {
+  border: 1px solid #e6c200;
+  padding: 6px 8px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.iuranTable th {
+  background: #f3e7b3;
+  font-weight: 600;
+}
+
+.iuranTable tr:nth-child(even) {
+  background: #f9f6e7;
+}
+
+.iuranTable label {
+  cursor: pointer;
 }
