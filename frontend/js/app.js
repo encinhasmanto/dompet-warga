@@ -35,7 +35,7 @@ function updateUI() {
   const list = document.getElementById("transactions");
   list.innerHTML = "";
   // Get the last 10 transactions (most recent first)
-  const latest = transactions.slice(-10).reverse();
+  const latest = transactions.slice(-13).reverse();
   latest.forEach((item) => {
     const li = document.createElement("li");
     li.innerHTML = `<strong>${item.type}:</strong> ${formatCurrency(
