@@ -48,8 +48,10 @@ function updateUI() {
 }
 
 function deposit() {
-  const rawValue = document.getElementById("amount").value;
-  const detail = document.getElementById("detail").value;
+  const amountInput = document.getElementById("amount");
+  const detailInput = document.getElementById("detail");
+  const rawValue = amountInput.value;
+  const detail = detailInput.value;
   const amount = parseInt(rawValue.replace(/\./g, ""));
   if (!isNaN(amount) && amount > 0) {
     balance = parseInt(balance) + amount;
@@ -60,12 +62,20 @@ function deposit() {
       time: new Date().toISOString(),
     });
     saveData();
+    showTransactionFeedback("Deposit Correction Success!", "green");
   }
+  // Reset inputs
+  amountInput.value = "";
+  detailInput.value = "";
+  amountInput.placeholder = "Enter amount";
+  detailInput.placeholder = "Enter transaction detail";
 }
 
 function withdraw() {
-  const rawValue = document.getElementById("amount").value;
-  const detail = document.getElementById("detail").value;
+  const amountInput = document.getElementById("amount");
+  const detailInput = document.getElementById("detail");
+  const rawValue = amountInput.value;
+  const detail = detailInput.value;
   const amount = parseInt(rawValue.replace(/\./g, ""));
   if (!isNaN(amount) && amount > 0 && amount <= balance) {
     balance = parseInt(balance) - amount;
@@ -76,7 +86,58 @@ function withdraw() {
       time: new Date().toISOString(),
     });
     saveData();
+    showTransactionFeedback("Withdraw Correction Success!", "red");
   }
+  // Reset inputs
+  amountInput.value = "";
+  detailInput.value = "";
+  amountInput.placeholder = "Enter amount";
+  detailInput.placeholder = "Enter transaction detail";
+}
+
+// --- Highlight Deposit and Withdraw in transaction list ---
+const originalUpdateUI = updateUI;
+updateUI = function () {
+  document.getElementById("balance").textContent = formatCurrency(balance);
+  const list = document.getElementById("transactions");
+  list.innerHTML = "";
+  // Get the last 10 transactions (most recent first)
+  const latest = transactions.slice(-13).reverse();
+  latest.forEach((item) => {
+    const li = document.createElement("li");
+    li.innerHTML = `<strong style="color:${
+      item.type === "Deposit" ? "green" : "red"
+    }">${item.type}:</strong> ${formatCurrency(item.amount)}<br>
+      <em>${item.detail || "-"}</em><br>
+      <small>${item.time ? formatDate(item.time) : ""}</small>`;
+    list.appendChild(li);
+  });
+};
+
+// Show feedback message with color
+function showTransactionFeedback(message, color) {
+  let feedback = document.getElementById("transactionFeedback");
+  if (!feedback) {
+    feedback = document.createElement("div");
+    feedback.id = "transactionFeedback";
+    feedback.style.position = "fixed";
+    feedback.style.top = "20px";
+    feedback.style.right = "20px";
+    feedback.style.zIndex = "9999";
+    feedback.style.padding = "10px 20px";
+    feedback.style.borderRadius = "6px";
+    feedback.style.fontWeight = "bold";
+    document.body.appendChild(feedback);
+  }
+  feedback.textContent = message;
+  feedback.style.background = color === "green" ? "#d4edda" : "#f8d7da";
+  feedback.style.color = color === "green" ? "#155724" : "#721c24";
+  feedback.style.border =
+    color === "green" ? "1px solid #c3e6cb" : "1px solid #f5c6cb";
+  feedback.style.display = "block";
+  setTimeout(() => {
+    feedback.style.display = "none";
+  }, 1500);
 }
 
 function saveData() {
@@ -147,7 +208,8 @@ function payIuran() {
   );
   let detail = "";
   let amount = 0;
-  let iuranBulan = parseInt(document.getElementById("iuranJumlahBulan").value);
+  const iuranJumlahBulanInput = document.getElementById("iuranJumlahBulan");
+  let iuranBulan = parseInt(iuranJumlahBulanInput.value);
 
   if (!propertyType) {
     alert("Pilih Ruko atau Rumah terlebih dahulu.");
@@ -222,6 +284,10 @@ function payIuran() {
   document.getElementById("blockRumahTypeA").style.display = "none";
   document.getElementById("blockRumahTypeB").style.display = "none";
   document.getElementById("blockRuko").style.display = "none";
+
+  // Reset iuran input
+  iuranJumlahBulanInput.value = "";
+  iuranJumlahBulanInput.placeholder = "Mau berapa bulan, Pak?";
 
   renderIuranTable(currentPaymentTab, currentPaymentYear);
 }

@@ -1,5 +1,13 @@
 :root {
-  --label-text-color: #bfa100;
+  --primary-bg: #f7faf9;
+  --container-bg: #ffffff;
+  --accent: #ffe0b2;
+  --accent-dark: #ffb347;
+  --accent-light: #fff8ed;
+  --label-text-color: #6b8e6b;
+  --border-color: #e3f2e1;
+  --table-header: #e8f5e9;
+  --table-row-alt: #f8fcf6;
 }
 
 body {
@@ -8,8 +16,9 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
+  text-align: center;
   padding-top: 40px;
-  background: #e0e0e0; /* darker grey */
+  background: var(--primary-bg);
 }
 
 #mainFlexContainer {
@@ -23,74 +32,47 @@ body {
   margin: 0 auto;
 }
 
-.balanceContainer {
-  background: #f3f3f3; /* darker white */
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.13);
-  width: 300px;
-  text-align: center;
-  /* margin-right: 1rem; */
-  /* flex: 1 1 300px; */
-  min-width: 280px;
-  max-width: 350px;
-}
-
-.iuranIPLContainer {
-  background: #f3f3f3; /* darker white */
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.13);
-  width: 300px;
-  text-align: center;
-  /* margin-left: 1rem; */
-  /* flex: 1 1 300px; */
-  min-width: 280px;
-  max-width: 350px;
-}
-
-/* Correction and Transactions Containers Styling */
+.balanceContainer,
+.iuranIPLContainer,
 .correctionContainer,
 .transactionsContainer {
-  background: #f3f3f3;
+  background: var(--container-bg);
   padding: 20px;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.13);
-  margin-bottom: 24px;
-  margin-top: 0;
-  margin-left: 0;
-  margin-right: 0;
   min-width: 280px;
   max-width: 350px;
-}
-
-#leftColumn > .balanceContainer,
-#leftColumn > .iuranIPLContainer,
-#rightColumn > .correctionContainer,
-#rightColumn > .transactionsContainer {
-  margin-bottom: 24px;
+  color: var(--label-text-color);
 }
 
 #paymentTrackerContainer {
-  background: #f3f3f3;
+  background: var(--container-bg);
   border-radius: 10px;
   margin: 32px auto 0 auto;
-  padding: 20px 16px 16px 16px;
+  padding: 30px 30px 30px 30px;
   width: 100%;
   max-width: 900px;
-  box-shadow: 0 2px 8px rgba(212, 175, 55, 0.08);
+  box-shadow: 0 2px 8px rgba(0, 153, 168, 0.08);
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
   margin-top: 32px;
+  color: var(--label-text-color);
 }
 
-input {
+.correctionContainer input {
   padding: 10px;
   width: 80%;
   margin-bottom: 10px;
-  background: #f7f7f7; /* slightly darker input */
-  border: 1px solid #bdbdbd; /* darker border */
+  background: var(--accent-light);
+  border: 1px solid var(--border-color);
+  color: var(--label-text-color);
+  border-radius: 6px;
+}
+
+input {
+  background: var(--accent-light);
+  border: 1px solid var(--border-color);
+  color: var(--label-text-color);
 }
 
 button {
@@ -100,14 +82,19 @@ button {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  background: var(--accent);
+  color: #fff;
+  transition: background 0.2s;
+}
+button:hover {
+  background: var(--accent-dark);
 }
 
 ul {
   list-style-type: none;
   padding: 0;
+  color: var(--label-text-color);
 }
-
-/* Iuran IPL */
 
 #propertyStep input,
 #blockRumah input,
@@ -117,10 +104,11 @@ ul {
   padding: 8px;
   margin: 5px 5px 5px 5px;
   width: 10%;
-  background: #ededed; /* darker input */
-  border: 1px solid #bdbdbd;
+  background: var(--accent-light);
+  border: 1px solid var(--border-color);
   border-radius: 4px;
   box-sizing: border-box;
+  color: var(--label-text-color);
 }
 
 #propertyStep,
@@ -128,17 +116,17 @@ ul {
 #blockRumahTypeA,
 #blockRumahTypeB,
 #blockRuko {
-  margin: 10px 0 10px 0px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
   gap: 8px;
-  background: #fffbea;
+  background: var(--accent-light);
   border-radius: 8px;
   padding: 12px 16px;
-  box-shadow: 0 2px 8px rgba(212, 175, 55, 0.08);
-  border: 1px solid #e6c200;
+  box-shadow: 0 2px 8px rgba(0, 153, 168, 0.08);
+  border: 1px solid var(--border-color);
+  color: var(--label-text-color);
 }
 
 #propertyStep label,
@@ -150,31 +138,27 @@ ul {
   align-items: center;
   font-weight: 500;
   cursor: pointer;
-  color: #bfa100;
+  color: var(--label-text-color);
   padding: 4px 0 4px 4px;
   border-radius: 4px;
-  color: var(--label-text-color);
   width: 100%;
   transition: background 0.2s;
 }
-
 #propertyStep label:hover,
 #blockRumah label:hover,
 #blockRumahTypeA label:hover,
 #blockRumahTypeB label:hover,
 #blockRuko label:hover {
-  background: #fff3cd;
+  background: var(--table-row-alt);
 }
-
 #propertyStep input[type="radio"],
 #blockRumah input[type="radio"],
 #blockRumahTypeA input[type="radio"],
 #blockRumahTypeB input[type="radio"],
 #blockRuko input[type="radio"] {
-  accent-color: #e6c200;
+  accent-color: var(--accent);
   margin-right: 8px;
 }
-
 #bayarTransaksi {
   margin-top: 8px;
   display: flex;
@@ -182,98 +166,87 @@ ul {
   align-items: center;
   justify-content: center;
 }
-
 #iuranJumlahBulan,
 #iuranButton {
   padding: 8px;
   margin: 5px 5px 5px 5px;
-  border: 1px solid #bdbdbd;
+  border: 1px solid var(--border-color);
   border-radius: 7px;
   box-sizing: border-box;
+  color: var(--label-text-color);
 }
-
 #iuranJumlahBulan {
   width: 60%;
-  background: #ededed;
+  background: var(--accent-light);
 }
-
 #iuranButton {
-  background: #bfa100;
+  background: var(--accent);
   color: white;
   cursor: pointer;
   width: 27%;
 }
-
 #iuranButton:focus {
   outline: none;
-  box-shadow: 0 0 0 2px rgba(230, 194, 0, 0.5);
+  box-shadow: 0 0 0 2px rgba(0, 153, 168, 0.2);
 }
 #iuranButton:hover {
-  background: #a88a00;
+  background: var(--accent-dark);
 }
-
 #iuranButton:active {
-  background: #8c7300;
+  background: #005f66;
 }
-
 #iuranButton:disabled {
-  background: #e6c200;
+  background: var(--accent);
   opacity: 0.5;
   cursor: not-allowed;
 }
-
 #iuranButton:disabled:hover {
-  background: #e6c200;
+  background: var(--accent);
 }
-
 #iuranJumlahBulan::placeholder {
-  color: #bfa100;
+  color: var(--label-text-color);
 }
 #iuranJumlahBulan:focus {
-  border-color: #e6c200;
+  border-color: var(--accent);
   outline: none;
 }
-
 #iuranTableContainer {
-  background: #f3f3f3;
+  background: var(--container-bg);
   border-radius: 10px;
   margin: 24px auto 0 auto;
   padding: 16px;
   width: 100%;
   max-width: 900px;
-  box-shadow: 0 2px 8px rgba(212, 175, 55, 0.08);
+  box-shadow: 0 2px 8px rgba(0, 153, 168, 0.08);
+  color: var(--label-text-color);
 }
-
 #paymentTrackerContainer h1 {
-  font-size: 1.6rem;
-  color: #bfa100;
+  color: var(--accent);
   margin-bottom: 12px;
 }
-
 #paymentYearSelector {
   margin-bottom: 12px;
+  padding: 10px;
   display: flex;
   align-items: center;
   gap: 8px;
+  color: var(--label-text-color);
 }
-
 #paymentYear {
   padding: 4px 10px;
   border-radius: 5px;
-  border: 1px solid #e6c200;
-  background: #fffbea;
-  color: #bfa100;
+  border: 1px solid var(--border-color);
+  background: var(--accent-light);
+  color: var(--label-text-color);
   font-weight: 500;
 }
-
 #iuranTableTabs {
   display: flex;
   gap: 8px;
   margin-bottom: 12px;
 }
-
 #iuranTableTabs button {
-  background: #bfa100;
+  background: var(--accent);
   color: white;
   border: none;
   border-radius: 6px 6px 0 0;
@@ -282,49 +255,42 @@ ul {
   font-weight: 500;
   transition: background 0.2s;
 }
-
 #iuranTableTabs button.active {
-  background: #8c7300;
+  background: var(--accent-dark);
 }
-
 .iuranTable {
   width: 100%;
   border-collapse: collapse;
-  background: #fffbea;
+  background: var(--accent-light);
   border-radius: 8px;
   overflow: hidden;
+  color: var(--label-text-color);
 }
-
 .iuranTable th,
 .iuranTable td {
-  border: 1px solid #e6c200;
+  border: 1px solid var(--border-color);
   padding: 6px 8px;
   text-align: center;
   font-size: 14px;
 }
-
 .iuranTable th {
-  background: #f3e7b3;
+  background: var(--table-header);
   font-weight: 600;
 }
-
 .iuranTable tr:nth-child(even) {
-  background: #f9f6e7;
+  background: var(--table-row-alt);
 }
-
 .iuranTable label {
   cursor: pointer;
+  color: var(--label-text-color);
 }
-
-/* Add gap between checkboxes in iuranTable */
 .iuranTable td label {
   margin: 0 4px;
 }
-
 .iuranTable td {
-  padding: 6px 10px;
+  padding: 13px 13px;
+  text-align: left;
 }
-
 #leftColumn,
 #rightColumn {
   display: flex;
